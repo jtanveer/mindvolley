@@ -28,4 +28,8 @@ class Requester {
     void setTaskCompleteCallback(TaskCompleteCallback taskCompleteCallback) {
         this.taskCompleteCallback = taskCompleteCallback;
     }
+
+    boolean isTypeMatch(MediaType c1, MediaType c2) {
+        return c1.type().equals(c2.type());
+    }
 }

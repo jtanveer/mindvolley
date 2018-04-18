@@ -51,14 +51,17 @@ class ImageRequester extends Requester implements Runnable {
             if (bitmap == null) {
                 log("connecting to " + url);
                 Response response = NetworkHandler.getInstance().request(url);
+                log("received response");
                 MediaType contentType = response.body().contentType();
                 log(contentType.toString());
-                if (contentType == JPG || contentType == PNG) {
+                if (isTypeMatch(contentType, JPG) || isTypeMatch(contentType, PNG)) {
+                    log("processing image bytestream");
                     InputStream stream = response.body().byteStream();
                     bitmap = BitmapFactory.decodeStream(stream);
                 } else {
                     throw new IllegalArgumentException("Not a valid image!");
                 }
+                log("image loaded from network");
             } else {
                 log("returning cached bitmap");
             }

@@ -28,7 +28,7 @@ public class MindVolley {
         CacheManager.init(cacheSize);
     }
 
-    public MindVolley getInstance() {
+    public static MindVolley getInstance() {
         if (instance == null) {
             throw new IllegalStateException("MindVolley.init() needs to be called first!");
         }

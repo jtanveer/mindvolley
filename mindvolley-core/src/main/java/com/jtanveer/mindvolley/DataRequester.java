@@ -41,9 +41,9 @@ class DataRequester extends Requester implements Runnable {
             }
             MediaType contentType = response.body().contentType();
             log(contentType.toString());
-            if (contentType == JSON || contentType == JSON_PLAIN) {
+            if (isTypeMatch(contentType, JSON) || isTypeMatch(contentType, JSON_PLAIN)) {
                 // process JSON
-            } else if (contentType == XML || contentType == XML_PLAIN) {
+            } else if (isTypeMatch(contentType, XML) || isTypeMatch(contentType, XML_PLAIN)) {
                 // process XML
                 throw new UnsupportedOperationException("XML is not supported yet!");
             } else {

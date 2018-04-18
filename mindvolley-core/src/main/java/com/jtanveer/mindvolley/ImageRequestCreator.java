@@ -4,7 +4,7 @@ package com.jtanveer.mindvolley;
  * Created by jtanveer on 18/4/18.
  */
 
-class ImageRequestCreator {
+public class ImageRequestCreator {
 
     private final ImageVolley imageVolley;
     private final ImageRequest.Builder builder;
