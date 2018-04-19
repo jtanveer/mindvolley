@@ -4,7 +4,6 @@ import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -20,9 +19,10 @@ public class BindingUtils {
 
     @BindingAdapter({"imageUrl"})
     public static void loadContentImage(final ImageView view, String url) {
-        view.setImageDrawable(new ColorDrawable(ContextCompat.getColor(view.getContext(), R.color.colorPrimaryLight)));
+        view.setImageDrawable(new ColorDrawable(ContextCompat.getColor(view.getContext(), R.color.colorLightGrey)));
         if (url != null && !TextUtils.isEmpty(url)) {
-            MindVolley.getInstance().getImageVolley().from(url).fallbackImageResource(R.drawable.ic_user).load(new ImageRequestCallback() {
+            MindVolley.getInstance().getImageVolley().from(url).fallbackImageResource(R.drawable.empty)
+                    .load(new ImageRequestCallback() {
                 @Override
                 public void onImageLoaded(Bitmap bitmap) {
                     view.setImageBitmap(bitmap);
@@ -38,9 +38,9 @@ public class BindingUtils {
 
     @BindingAdapter({"profileImageUrl"})
     public static void loadCommentImage(final ImageView view, String url) {
-        view.setImageDrawable(new ColorDrawable(ContextCompat.getColor(view.getContext(), R.color.colorPrimaryLight)));
+        view.setImageDrawable(new ColorDrawable(ContextCompat.getColor(view.getContext(), R.color.colorLightGrey)));
         if (url != null && !TextUtils.isEmpty(url)) {
-            MindVolley.getInstance().getImageVolley().from(url).fallbackImageResource(R.drawable.ic_user)
+            MindVolley.getInstance().getImageVolley().from(url).fallbackImageResource(R.drawable.user)
                     .load(new ImageRequestCallback() {
                 @Override
                 public void onImageLoaded(Bitmap bitmap) {
