@@ -34,7 +34,7 @@ class TaskManager implements TaskCompleteCallback {
     private void enqueue(String key, Runnable task) {
         Future<?> future = threadManager.enqueue(task);
         runningTasks.put(key, future);
-        log("task enqueued");
+        log("task enqueued. task list size: " + runningTasks.size());
     }
 
     String enqueue(ImageRequester task) {

@@ -60,11 +60,14 @@ class CacheManager {
 
     public String getData(String key) {
         Content content = cache.get(key);
-        if (content != null && content.contentType == TYPE_DATA) {
-            return content.data;
+        if (content != null) {
+            if (content.contentType == TYPE_DATA) {
+                return content.data;
+            } else {
+                throw new IllegalArgumentException("Invalid data!");
+            }
         }
-
-        throw new IllegalArgumentException("Invalid data!");
+        return null;
     }
 
     void setImage(String key, Bitmap image) {

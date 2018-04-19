@@ -36,7 +36,7 @@ class ThreadManager {
 
     Future<?> enqueue(Runnable task) {
         Future<?> future = executor.submit(task);
-        log("task submitted");
+        log("task submitted. queue size: " + taskQueue.size());
 
         return future;
     }

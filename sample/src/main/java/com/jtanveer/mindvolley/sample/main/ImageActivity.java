@@ -1,5 +1,6 @@
 package com.jtanveer.mindvolley.sample.main;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import com.jtanveer.mindvolley.MindVolley;
 import com.jtanveer.mindvolley.sample.R;
 import com.jtanveer.mindvolley.sample.databinding.ActivityImageBinding;
+import com.jtanveer.mindvolley.sample.feed.FeedActivity;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class ImageActivity extends AppCompatActivity implements ImageView, View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MindVolley.init(1048 * 1048 * 4);
+        MindVolley.init(1048 * 1048 * 10);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image);
 
@@ -40,7 +42,11 @@ public class ImageActivity extends AppCompatActivity implements ImageView, View.
 
     @Override
     public void showLoadingIndicator(boolean show) {
-        binding.progress.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        if (show) {
+            binding.progress.show();
+        } else {
+            binding.progress.hide();
+        }
     }
 
     @Override
@@ -52,13 +58,14 @@ public class ImageActivity extends AppCompatActivity implements ImageView, View.
     @Override
     public void launchFeed() {
         // start feed activity
+        startActivity(new Intent(this, FeedActivity.class));
     }
 
     @Override
     public void displayPagerItem() {
         binding.pager.setAdapter(adapter);
+        binding.pager.setOffscreenPageLimit(2);
         binding.indicator.setViewPager(binding.pager);
-        binding.pager.setCurrentItem(0);
     }
 
     @Override

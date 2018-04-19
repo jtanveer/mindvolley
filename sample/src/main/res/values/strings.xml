@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">MindVolley</string>
     <string name="title_activity_main">MindVolley</string>
+    <string name="title_activity_feed">Feed</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="image_item_desc">Image item of a pager</string>
+    <string name="image_item_desc">Image item of an adapter</string>
 </resources>

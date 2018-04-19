@@ -39,13 +39,16 @@ class DataRequester<S, E, A, B> extends Requester implements Runnable {
                     A success = (A) message.obj;
                     log(success.getClass().getName());
                     requestCallback.onSuccess(success);
+                    taskCompleteCallback.onTaskCompleted(key);
                     break;
                 case TASK_ERROR:
                     B error = (B) message.obj;
                     requestCallback.onError(error);
+                    taskCompleteCallback.onTaskCompleted(key);
                     break;
                 case TASK_FAILED:
                     requestCallback.onFailed();
+                    taskCompleteCallback.onTaskCompleted(key);
                     break;
                 default:
                     super.handleMessage(message);
@@ -114,7 +117,6 @@ class DataRequester<S, E, A, B> extends Requester implements Runnable {
 
     private <T> void processJson(String jsonString, Class<T> type, int state) {
         log(jsonString.toString());
-        JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(jsonString);
         if (element.isJsonObject()) {
             T success = gson.fromJson(element.toString(), type);

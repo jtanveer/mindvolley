@@ -18,7 +18,7 @@ public class ImageInteractorImpl implements ImageInteractor {
     }
 
     @Override
-    public void fetchUrls(ImageCRUDListener listener) {
+    public void fetchUrls(ImageUrlLoadListener listener) {
         listener.onUrlsLoaded(urls);
     }
 }

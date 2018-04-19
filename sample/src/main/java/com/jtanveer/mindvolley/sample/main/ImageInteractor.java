@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ImageInteractor {
 
-    interface ImageCRUDListener {
+    interface ImageUrlLoadListener {
         void onUrlsLoaded(List<String> urls);
     }
 
-    void fetchUrls(ImageCRUDListener listener);
+    void fetchUrls(ImageUrlLoadListener listener);
 }

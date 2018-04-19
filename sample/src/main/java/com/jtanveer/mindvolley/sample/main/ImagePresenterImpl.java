@@ -6,7 +6,7 @@ import java.util.List;
  * Created by jtanveer on 19/4/18.
  */
 
-public class ImagePresenterImpl implements ImagePresenter, ImageInteractor.ImageCRUDListener {
+public class ImagePresenterImpl implements ImagePresenter, ImageInteractor.ImageUrlLoadListener {
 
     private ImageInteractor imageInteractor;
     private ImageView imageView;

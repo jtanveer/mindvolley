@@ -31,10 +31,12 @@ class ImageRequester extends Requester implements Runnable {
                 case TASK_COMPLETED:
                     Bitmap bitmap = (Bitmap) message.obj;
                     requestCallback.onImageLoaded(bitmap);
+                    taskCompleteCallback.onTaskCompleted(key);
                     break;
                 case TASK_ERROR:
                     int fallbackImageResource = (int) message.obj;
                     requestCallback.onError(fallbackImageResource);
+                    taskCompleteCallback.onTaskCompleted(key);
                     break;
                 default:
                     super.handleMessage(message);
@@ -92,16 +94,21 @@ class ImageRequester extends Requester implements Runnable {
         int outHeight;
         int inWidth = bitmap.getWidth();
         int inHeight = bitmap.getHeight();
-        if(inWidth > inHeight){
-            outWidth = option.targetWidth;
-            outHeight = (inHeight * option.targetWidth) / inWidth;
+        if (inWidth > option.targetWidth && inHeight > option.targetHeight) {
+            if(inWidth > inHeight){
+                outWidth = option.targetWidth;
+                outHeight = (inHeight * option.targetWidth) / inWidth;
+            } else {
+                outHeight = option.targetHeight;
+                outWidth = (inWidth * option.targetHeight) / inHeight;
+            }
+
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
+
+            return resized;
         } else {
-            outHeight = option.targetHeight;
-            outWidth = (inWidth * option.targetHeight) / inHeight;
+            // image is already scaled
+            return bitmap;
         }
-
-        Bitmap resized = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
-
-        return resized;
     }
 }

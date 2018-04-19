@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.jtanveer.mindvolley.ImageRequestCallback;
 import com.jtanveer.mindvolley.MindVolley;
@@ -22,6 +24,7 @@ public class ImageItemFragment extends Fragment {
     private static final String KEY_URL = "url";
 
     private FragmentImageItemBinding binding;
+    private Animation animation;
 
     private String url;
 
@@ -49,18 +52,24 @@ public class ImageItemFragment extends Fragment {
         super.onActivityCreated(savedInstanceStates);
 
         url = getArguments().getString(KEY_URL);
+        animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
 
+        binding.progress.show();
         MindVolley.getInstance().getImageVolley()
                 .from(url)
                 .load(new ImageRequestCallback() {
                     @Override
                     public void onImageLoaded(Bitmap bitmap) {
                         binding.imgItem.setImageBitmap(bitmap);
+                        binding.imgItem.startAnimation(animation);
+                        binding.progress.hide();
                     }
 
                     @Override
                     public void onError(int fallbackImageResource) {
                         binding.imgItem.setImageResource(fallbackImageResource);
+                        binding.imgItem.startAnimation(animation);
+                        binding.progress.hide();
                     }
                 });
     }
