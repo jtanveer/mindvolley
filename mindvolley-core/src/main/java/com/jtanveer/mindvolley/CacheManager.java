@@ -48,6 +48,7 @@ class CacheManager {
     public Bitmap getImage(String key) {
         Content content = cache.get(key);
         if (content != null) {
+            log("cache has the contain!");
             if (content.contentType == TYPE_IMAGE) {
                 return content.bitmap;
             } else {
@@ -69,7 +70,7 @@ class CacheManager {
     void setImage(String key, Bitmap image) {
         int byteCount = BitmapCompat.getAllocationByteCount(image);
         cache.put(key, new Content(TYPE_IMAGE, image, null, byteCount));
-        log("image cached");
+        log("image cached. byte count: " + byteCount);
     }
 
     void setData(String key, String data) {

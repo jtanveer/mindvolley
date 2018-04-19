@@ -20,11 +20,13 @@ class ImageRequestOption {
 
     static class Builder {
 
+        private static final int DEFAULT_TARGET_WIDTH = 640;
+        private static final int DEFAULT_TARGET_HEIGHT = 480;
         private static final int DEFAULT_FALLBACK_IMAGE = R.drawable.broken;
 
         String url;
-        int targetWidth;
-        int targetHeight;
+        int targetWidth = DEFAULT_TARGET_WIDTH;
+        int targetHeight = DEFAULT_TARGET_HEIGHT;
         int fallbackImageResource = DEFAULT_FALLBACK_IMAGE;
 
         Builder(String url) {

@@ -53,6 +53,7 @@ class ImageRequester extends Requester implements Runnable {
         try {
             String url = option.url;
             Bitmap bitmap = cacheManager.getImage(url);
+            log("hit count: " + cacheManager.hitCount());
             if (bitmap == null) {
                 log("connecting to " + url);
                 Response response = NetworkHandler.getInstance().request(url);
@@ -61,8 +62,7 @@ class ImageRequester extends Requester implements Runnable {
                 log(contentType.toString());
                 if (isTypeMatch(contentType, JPG) || isTypeMatch(contentType, PNG)) {
                     log("processing image bytestream");
-                    InputStream stream = response.body().byteStream();
-                    bitmap = BitmapFactory.decodeStream(stream);
+                    bitmap = getScaledBitmap(response.body().byteStream());
                     cacheManager.setImage(url, bitmap);
                 } else {
                     log("invalid image!");
@@ -83,5 +83,25 @@ class ImageRequester extends Requester implements Runnable {
     private void sendMessageToHandler(int what, Object obj) {
         Message message = handler.obtainMessage(what, obj);
         message.sendToTarget();
+    }
+
+    private Bitmap getScaledBitmap(InputStream stream) {
+        Bitmap bitmap = BitmapFactory.decodeStream(stream);
+
+        int outWidth;
+        int outHeight;
+        int inWidth = bitmap.getWidth();
+        int inHeight = bitmap.getHeight();
+        if(inWidth > inHeight){
+            outWidth = option.targetWidth;
+            outHeight = (inHeight * option.targetWidth) / inWidth;
+        } else {
+            outHeight = option.targetHeight;
+            outWidth = (inWidth * option.targetHeight) / inHeight;
+        }
+
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
+
+        return resized;
     }
 }

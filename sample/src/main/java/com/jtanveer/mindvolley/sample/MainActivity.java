@@ -108,6 +108,11 @@ public class MainActivity extends AppCompatActivity
             public void onError(FeedResponse error) {
                 System.out.println(error.getColor());
             }
+
+            @Override
+            public void onFailed() {
+
+            }
         });
     }
 
