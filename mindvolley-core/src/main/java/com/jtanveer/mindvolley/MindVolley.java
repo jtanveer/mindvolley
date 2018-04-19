@@ -40,6 +40,6 @@ public class MindVolley {
     }
 
     public DataVolley getDataVolley() {
-        return null;
+        return DataVolley.getInstance();
     }
 }

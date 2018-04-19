@@ -7,11 +7,11 @@ package com.jtanveer.mindvolley;
 public class ImageRequestCreator {
 
     private final ImageVolley imageVolley;
-    private final ImageRequest.Builder builder;
+    private final ImageRequestOption.Builder builder;
 
     ImageRequestCreator(ImageVolley imageVolley, String url) {
         this.imageVolley = imageVolley;
-        this.builder = new ImageRequest.Builder(url);
+        this.builder = new ImageRequestOption.Builder(url);
     }
 
     public ImageRequestCreator targetWidht(int targetWidth) {
@@ -24,9 +24,14 @@ public class ImageRequestCreator {
         return this;
     }
 
+    public ImageRequestCreator fallbackImageResource(int fallbackImageResource) {
+        builder.fallbackImageResource(fallbackImageResource);
+        return this;
+    }
+
     public String load(ImageRequestCallback callback) {
-        ImageRequest request = builder.build();
-        ImageRequester runnable = new ImageRequester(request.url, callback);
+        ImageRequestOption request = builder.build();
+        ImageRequester runnable = new ImageRequester(request, callback);
         return imageVolley.taskManager.enqueue(runnable);
     }
 }

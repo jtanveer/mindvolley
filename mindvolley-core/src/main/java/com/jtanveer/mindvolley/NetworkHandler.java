@@ -3,6 +3,7 @@ package com.jtanveer.mindvolley;
 import android.os.Bundle;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import okhttp3.FormBody;
@@ -41,7 +42,7 @@ class NetworkHandler {
         return client.newCall(request).execute();
     }
 
-    Response request(String url, Bundle data) throws IOException {
+    Response request(String url, Map<String, String> data) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .post(buildFormBody(data))
@@ -50,11 +51,11 @@ class NetworkHandler {
         return client.newCall(request).execute();
     }
 
-    private RequestBody buildFormBody(Bundle data) {
+    private RequestBody buildFormBody(Map<String, String> data) {
         FormBody.Builder builder = new FormBody.Builder();
         Set<String> keys = data.keySet();
         for (String key : keys) {
-            builder.add(key, data.get(key).toString());
+            builder.add(key, data.get(key));
         }
         return builder.build();
     }

@@ -9,13 +9,16 @@ import okhttp3.MediaType;
 class Requester {
 
     static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    static final MediaType JSON_VND = MediaType.parse("application/vnd.api+json");
     static final MediaType JSON_PLAIN = MediaType.parse("text/plain");
     static final MediaType XML = MediaType.parse("application/xml; charset=UTF-8");
     static final MediaType XML_PLAIN = MediaType.parse("text/xml");
     static final MediaType JPG = MediaType.parse("image/jpeg");
     static final MediaType PNG = MediaType.parse("image/png");
 
-    static final int TASK_COMPLETE = 0;
+    static final int TASK_COMPLETED = 0;
+    static final int TASK_ERROR = 1;
+    static final int TASK_FAILED = 2;
 
     String key;
 

@@ -6,12 +6,12 @@ package com.jtanveer.mindvolley;
 
 public class ImageVolley {
 
-    static ImageVolley imageVolley;
+    static ImageVolley instance;
 
     TaskManager taskManager;
 
     static {
-        imageVolley = new ImageVolley();
+        instance = new ImageVolley();
     }
 
     private ImageVolley() {
@@ -19,7 +19,7 @@ public class ImageVolley {
     }
 
     public static ImageVolley getInstance() {
-        return imageVolley;
+        return instance;
     }
 
     public ImageRequestCreator from(String url) {

@@ -15,8 +15,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.jtanveer.mindvolley.DataRequestCallback;
 import com.jtanveer.mindvolley.ImageRequestCallback;
 import com.jtanveer.mindvolley.MindVolley;
+import com.jtanveer.mindvolley.ModelMapper;
+import com.jtanveer.mindvolley.sample.github.GithubResponse;
+import com.jtanveer.mindvolley.sample.model.FeedResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,11 +60,16 @@ public class MainActivity extends AppCompatActivity
         imgCheck2 = findViewById(R.id.img_check2);
 
         MindVolley.init();
-        MindVolley.getInstance().getImageVolley().from("https://images.unsplash.com/photo-1464547323744-4edd0cd0c746?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=c990dc1cd803124b9e6c43b97c844ad3")
+        MindVolley.getInstance().getImageVolley().from("https://images.unsplash.com/photo-1464550580740-b3f73fd373cb?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=899c346de4765f353375b8a5bd6cfc0e")
                 .load(new ImageRequestCallback() {
                     @Override
                     public void onImageLoaded(Bitmap bitmap) {
                         imgCheck1.setImageBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void onError(int fallbackImageResource) {
+                        imgCheck1.setImageResource(fallbackImageResource);
                     }
                 });
 
@@ -67,7 +79,36 @@ public class MainActivity extends AppCompatActivity
                     public void onImageLoaded(Bitmap bitmap) {
                         imgCheck2.setImageBitmap(bitmap);
                     }
+
+                    @Override
+                    public void onError(int fallbackImageResource) {
+                        imgCheck2.setImageResource(fallbackImageResource);
+                    }
                 });
+
+//        MindVolley.getInstance().getDataVolley().modelMapper(new ModelMapper<FeedResponse, FeedResponse>()).newRequest(FeedResponse.class, FeedResponse.class).from("http://pastebin.com/raw/wgkJgazE").load(new DataRequestCallback<List<FeedResponse>, List<FeedResponse>>() {
+//            @Override
+//            public void onSuccess(List<FeedResponse> success) {
+//                System.out.println(success.get(0).getUser().getName());
+//            }
+//
+//            @Override
+//            public void onError(List<FeedResponse> error) {
+//
+//            }
+//        });
+
+        MindVolley.getInstance().getDataVolley().modelMapper(new ModelMapper<GithubResponse, FeedResponse>()).newRequest(GithubResponse.class, FeedResponse.class).from("https://api.github.com/users/jtanveer").load(new DataRequestCallback<GithubResponse, FeedResponse>() {
+            @Override
+            public void onSuccess(GithubResponse success) {
+                System.out.println(success.getName());
+            }
+
+            @Override
+            public void onError(FeedResponse error) {
+                System.out.println(error.getColor());
+            }
+        });
     }
 
     @Override

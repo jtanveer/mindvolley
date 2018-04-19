@@ -20,7 +20,7 @@ import static com.jtanveer.mindvolley.Logger.log;
 
 class ImageRequester extends Requester implements Runnable {
 
-    private String url;
+    private ImageRequestOption option;
     private ImageRequestCallback requestCallback;
     private CacheManager cacheManager;
 
@@ -28,9 +28,13 @@ class ImageRequester extends Requester implements Runnable {
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {
-                case TASK_COMPLETE:
+                case TASK_COMPLETED:
                     Bitmap bitmap = (Bitmap) message.obj;
                     requestCallback.onImageLoaded(bitmap);
+                    break;
+                case TASK_ERROR:
+                    int fallbackImageResource = (int) message.obj;
+                    requestCallback.onError(fallbackImageResource);
                     break;
                 default:
                     super.handleMessage(message);
@@ -38,8 +42,8 @@ class ImageRequester extends Requester implements Runnable {
         }
     };
 
-    ImageRequester(String url, ImageRequestCallback requestCallback) {
-        this.url = url;
+    ImageRequester(ImageRequestOption option, ImageRequestCallback requestCallback) {
+        this.option = option;
         this.requestCallback = requestCallback;
         cacheManager = CacheManager.getInstance();
     }
@@ -47,6 +51,7 @@ class ImageRequester extends Requester implements Runnable {
     @Override
     public void run() {
         try {
+            String url = option.url;
             Bitmap bitmap = cacheManager.getImage(url);
             if (bitmap == null) {
                 log("connecting to " + url);
@@ -58,17 +63,25 @@ class ImageRequester extends Requester implements Runnable {
                     log("processing image bytestream");
                     InputStream stream = response.body().byteStream();
                     bitmap = BitmapFactory.decodeStream(stream);
+                    cacheManager.setImage(url, bitmap);
                 } else {
-                    throw new IllegalArgumentException("Not a valid image!");
+                    log("invalid image!");
+                    sendMessageToHandler(TASK_ERROR, option.fallbackImageResource);
+                    return;
                 }
                 log("image loaded from network");
             } else {
                 log("returning cached bitmap");
             }
-            Message message = handler.obtainMessage(TASK_COMPLETE, bitmap);
-            message.sendToTarget();
+            sendMessageToHandler(TASK_COMPLETED, bitmap);
         } catch (IOException e) {
             e.printStackTrace();
+            sendMessageToHandler(TASK_ERROR, option.fallbackImageResource);
         }
+    }
+
+    private void sendMessageToHandler(int what, Object obj) {
+        Message message = handler.obtainMessage(what, obj);
+        message.sendToTarget();
     }
 }

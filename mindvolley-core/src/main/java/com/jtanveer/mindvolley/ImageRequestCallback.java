@@ -9,4 +9,6 @@ import android.graphics.Bitmap;
 public interface ImageRequestCallback {
 
     void onImageLoaded(Bitmap bitmap);
+
+    void onError(int fallbackImageResource);
 }

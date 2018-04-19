@@ -46,6 +46,15 @@ class TaskManager implements TaskCompleteCallback {
         return key;
     }
 
+    String enqueue(DataRequester<?, ?, ?, ?> task) {
+        String key = UniqueKeyGenerator.randomString(8);
+        task.setKey(key);
+        task.setTaskCompleteCallback(this);
+        enqueue(key, task);
+
+        return key;
+    }
+
     void dequeue(String key) {
         runningTasks.remove(key);
         log("task dequeued");
